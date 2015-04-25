@@ -175,6 +175,10 @@ int main(int argc, char *argv[])
   cl_kernel knl = kernel_from_string(ctx, knl_text, "convolution", NULL);
   free(knl_text);
 
+  knl_text = read_file("copy.cl");
+  cl_kernel knl_copy = kernel_from_string(ctx, knl_text, "copy", NULL);
+  free(knl_text);
+
 #ifdef NON_OPTIMIZED
   int deviceWidth = xsize;
 #else
@@ -249,6 +253,16 @@ int main(int argc, char *argv[])
   CALL_CL_SAFE(clSetKernelArg(knl, 7, sizeof(localHeight), &localHeight));
   CALL_CL_SAFE(clSetKernelArg(knl, 8, sizeof(localWidth), &localWidth));
 
+  // Set copy kernel arguments
+  CALL_CL_SAFE(clSetKernelArg(knl_copy, 0, sizeof(buf_congray), &buf_congray));
+  CALL_CL_SAFE(clSetKernelArg(knl_copy, 1, sizeof(buf_gray), &buf_gray));
+  CALL_CL_SAFE(clSetKernelArg(knl_copy, 2, sizeof(buf_filter), &buf_filter));
+  CALL_CL_SAFE(clSetKernelArg(knl_copy, 3, sizeof(rows), &rows));
+  CALL_CL_SAFE(clSetKernelArg(knl_copy, 4, sizeof(cols), &cols));
+  CALL_CL_SAFE(clSetKernelArg(knl_copy, 5, sizeof(filterWidth), &filterWidth));
+  CALL_CL_SAFE(clSetKernelArg(knl_copy, 6, localMemSize, NULL));
+  CALL_CL_SAFE(clSetKernelArg(knl_copy, 7, sizeof(localHeight), &localHeight));
+  CALL_CL_SAFE(clSetKernelArg(knl_copy, 8, sizeof(localWidth), &localWidth));
   // --------------------------------------------------------------------------
   // print kernel info
   // --------------------------------------------------------------------------
@@ -260,6 +274,8 @@ int main(int argc, char *argv[])
   for(int loop = 0; loop < num_loops; ++loop)
   {
     CALL_CL_SAFE(clEnqueueNDRangeKernel(queue, knl, 2, NULL,
+          global_size, local_size, 0, NULL, NULL));
+    CALL_CL_SAFE(clEnqueueNDRangeKernel(queue, knl_copy, 2, NULL,
           global_size, local_size, 0, NULL, NULL));
   }
   CALL_CL_SAFE(clFinish(queue));
