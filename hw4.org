@@ -1,0 +1,112 @@
+
+
+* Download and convert image
+
+This script download and converts the image from [[https://interfacelift.com][Interface Lift]].
+
+#+BEGIN_SRC sh 
+  if [[ ! -e ./03884_hooverdamaerial_1280x800.jpg ]]
+  then
+      curl -O http://interfacelift.com/wallpaper/Df0b3624/03884_hooverdamaerial_1280x800.jpg
+  fi
+  convert -compress none 03884_hooverdamaerial_1280x800.jpg dam.ppm
+
+#+END_SRC
+
+Here is the image:
+#+attr_html: :width 600px
+[[file:03884_hooverdamaerial_1280x800.jpg]]
+
+Here is the convolved version obatined by running:
+#+BEGIN_EXAMPLE
+./convert dam.ppm 100
+#+END_EXAMPLE
+ 
+#+attr_html: :width 600px
+[[file:output.jpg]]
+
+Apart from being black and white, it is blurry as expected.
+
+* Timings
+
+** Laptop
+
+#+BEGIN_EXAMPLE
+
+☁  hw4  ./convolution dam.ppm 100
+Reading ``dam.ppm''
+Done reading ``dam.ppm'' of size 1280x800
+Writing cpu filtered image
+Choose platform:
+[0] Apple
+Enter choice: 0
+Choose device:
+[0] Intel(R) Core(TM) i5-4308U CPU @ 2.80GHz
+[1] Iris
+Enter choice: 1
+---------------------------------------------------------------------
+NAME: Iris
+VENDOR: Intel
+PROFILE: FULL_PROFILE
+VERSION: OpenCL 1.2
+EXTENSIONS: cl_APPLE_SetMemObjectDestructor cl_APPLE_ContextLoggingFunctions cl_APPLE_clut cl_APPLE_query_kernel_names cl_APPLE_gl_sharing cl_khr_gl_event cl_khr_global_int32_base_atomics cl_khr_global_int32_extended_atomics cl_khr_local_int32_base_atomics cl_khr_local_int32_extended_atomics cl_khr_byte_addressable_store cl_khr_image2d_from_buffer cl_khr_gl_depth_images cl_khr_depth_images cl_khr_3d_image_writes
+DRIVER_VERSION: 1.2(Dec 23 2014 00:18:30)
+
+Type: GPU
+EXECUTION_CAPABILITIES: Kernel
+GLOBAL_MEM_CACHE_TYPE: None (0)
+CL_DEVICE_LOCAL_MEM_TYPE: Local (1)
+SINGLE_FP_CONFIG: 0xbe
+QUEUE_PROPERTIES: 0x2
+
+VENDOR_ID: 16925952
+MAX_COMPUTE_UNITS: 40
+MAX_WORK_ITEM_DIMENSIONS: 3
+MAX_WORK_GROUP_SIZE: 512
+PREFERRED_VECTOR_WIDTH_CHAR: 1
+PREFERRED_VECTOR_WIDTH_SHORT: 1
+PREFERRED_VECTOR_WIDTH_INT: 1
+PREFERRED_VECTOR_WIDTH_LONG: 1
+PREFERRED_VECTOR_WIDTH_FLOAT: 1
+PREFERRED_VECTOR_WIDTH_DOUBLE: 0
+MAX_CLOCK_FREQUENCY: 1200
+ADDRESS_BITS: 64
+MAX_MEM_ALLOC_SIZE: 402653184
+IMAGE_SUPPORT: 1
+MAX_READ_IMAGE_ARGS: 128
+MAX_WRITE_IMAGE_ARGS: 8
+IMAGE2D_MAX_WIDTH: 16384
+IMAGE2D_MAX_HEIGHT: 16384
+IMAGE3D_MAX_WIDTH: 2048
+IMAGE3D_MAX_HEIGHT: 2048
+IMAGE3D_MAX_DEPTH: 2048
+MAX_SAMPLERS: 16
+MAX_PARAMETER_SIZE: 1024
+MEM_BASE_ADDR_ALIGN: 1024
+MIN_DATA_TYPE_ALIGN_SIZE: 128
+GLOBAL_MEM_CACHELINE_SIZE: 0
+GLOBAL_MEM_CACHE_SIZE: 0
+GLOBAL_MEM_SIZE: 1610612736
+MAX_CONSTANT_BUFFER_SIZE: 65536
+MAX_CONSTANT_ARGS: 8
+LOCAL_MEM_SIZE: 65536
+ERROR_CORRECTION_SUPPORT: 0
+PROFILING_TIMER_RESOLUTION: 80
+ENDIAN_LITTLE: 1
+AVAILABLE: 1
+COMPILER_AVAILABLE: 1
+MAX_WORK_GROUP_SIZES: 512 512 512
+---------------------------------------------------------------------
+Info for kernel convolution:
+  CL_KERNEL_WORK_GROUP_SIZE=512
+  CL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE=16
+  CL_KERNEL_LOCAL_MEM_SIZE=0
+  CL_KERNEL_PRIVATE_MEM_SIZE=0
+0.004582 s
+223.467588 MPixels/s
+1.787741 GBit/s
+10.883282 GFlop/s
+Writing OpenCL filtered image
+#+END_EXAMPLE
+
+** CIMS
