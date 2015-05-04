@@ -1,6 +1,7 @@
 #+TITLE: Homework 4
 #+AUTHOR: Noah D. Brenowitz
 #+OPTIONS: num:1 
+#+LATEX_HEADER: \usepackage[margin=1.5in]{geometry}
 
 * Download and convert image
 
@@ -16,8 +17,9 @@ This script download and converts the image from [[https://interfacelift.com][In
 #+END_SRC
 
 Here is the image:
+
 #+attr_html: :width 600px
-[[file:03884_hooverdamaerial_1280x800.jpg]]
+[[file:dam.png]]
 
 Here is the convolved version obatined by running:
 #+BEGIN_EXAMPLE
@@ -25,7 +27,7 @@ Here is the convolved version obatined by running:
 #+END_EXAMPLE
  
 #+attr_html: :width 600px
-[[file:output.jpg]]
+[[file:output.png]]
 
 Apart from being black and white, it is blurry as expected.
 
@@ -388,3 +390,6 @@ It doesn't run returning the following error:
 
 
 * Iterative Blurring
+
+  See the code for the implementation details. I did not account for
+  the edge effects unfortunately.
